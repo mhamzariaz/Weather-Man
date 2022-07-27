@@ -5,7 +5,7 @@ import os
 class FileHandler:
 
     @staticmethod
-    def get_data(path):
+    def read_files(path):
         my_list = []
         var = os.path.join(path, 'weatherfiles')
         for files in os.listdir(var):

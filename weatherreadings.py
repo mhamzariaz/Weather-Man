@@ -1,15 +1,16 @@
 from datetime import datetime
+from filehandler import FileHandler
 
 
 class WeatherReadings:
 
     @staticmethod
-    def retrieve_required_data(reader):  # takes data from files and returns required data in the form of a list
+    def retrieve_required_data(data_from_files):
 
         main_dates = []
-        for line in reader:
+        for line in data_from_files:
 
-            needed_dates = []  # list to store all the required data
+            needed_dates = []
             for k, v in line.items():
                 if k == 'PKT' or k == 'PKST':
                     dates = v
@@ -24,17 +25,25 @@ class WeatherReadings:
             if len(highest_temp) >= 1 and \
                     len(lowest_temp) >= 1 and \
                     len(highest_humid) >= 1:
-                try:
-                    needed_dates.append(int(new_dates.year))
-                    needed_dates.append(int(new_dates.month))
-                    needed_dates.append(int(new_dates.day))
-                    needed_dates.append(int(highest_temp))
-                    needed_dates.append(int(lowest_temp))
-                    needed_dates.append(int(highest_humid))
-                    needed_dates.append(int(mean_humid))
-                except ValueError:
-                    pass
 
-            if len(needed_dates) == 7:
-                main_dates.append(needed_dates)
+                needed_dates.append(int(new_dates.year))
+                needed_dates.append(int(new_dates.month))
+                needed_dates.append(int(new_dates.day))
+                needed_dates.append(int(highest_temp))
+                needed_dates.append(int(lowest_temp))
+                needed_dates.append(int(highest_humid))
+                needed_dates.append(int(mean_humid))
+
+            if len(needed_dates) > 0:
+                results_dict = {
+                    "Year": needed_dates[0],
+                    "Month": needed_dates[1],
+                    "Day": needed_dates[2],
+                    "Highest Temperature": needed_dates[3],
+                    "Lowest Temperature": needed_dates[4],
+                    "Max Humid": needed_dates[5],
+                    "Mean Humid": needed_dates[6]
+                }
+
+                main_dates.append(results_dict)
         return main_dates
